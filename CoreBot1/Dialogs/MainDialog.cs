@@ -101,27 +101,9 @@ namespace CoreBot1.Dialogs
                         Country = luisResult.Country
                     };
                     return await stepContext.BeginDialogAsync(nameof(BridgeTypologyDialog), topologyDetails, cancellationToken);
-                //var getBridgeMessageText = "Sick dude, what kind of bridge?";
-                //var GgtBridgeMessageMessage = MessageFactory.Text(getBridgeMessageText, getBridgeMessageText, InputHints.IgnoringInput);
-                //await stepContext.Context.SendActivityAsync(GgtBridgeMessageMessage, cancellationToken);
-                case FlightBooking.Intent.GetPersonFromSkill:
-                    var skill = luisResult.Skill;
-                    var foundPerson = GetDataFromDB.FindPersonWithSkill(skill.ToLower());
-                    var getPersonFromSkillMessageText = $"The people below are great at {skill}:\r\n{foundPerson}";
-                    var getPersonFromSkillMessage = MessageFactory.Text(getPersonFromSkillMessageText, getPersonFromSkillMessageText, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(getPersonFromSkillMessage, cancellationToken);
-                    break;
-                case FlightBooking.Intent.GetPersonFromProject:
-                    var project = luisResult.Project;
-                    var people = "bunch of people";
-                    var getPersonFromProjectMessageText = $"{project} is great at {people}";
-                    var getPersonFromProjectMessage = MessageFactory.Text(getPersonFromProjectMessageText, getPersonFromProjectMessageText, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(getPersonFromProjectMessage, cancellationToken);
-                    break;
-                case FlightBooking.Intent.ShowProject:
-                    var projectModel = luisResult.Project;
-                    StreamProject.Stream(projectModel);
-                    break;
+                    //var getBridgeMessageText = "Sick dude, what kind of bridge?";
+                    //var GgtBridgeMessageMessage = MessageFactory.Text(getBridgeMessageText, getBridgeMessageText, InputHints.IgnoringInput);
+                    //await stepContext.Context.SendActivityAsync(GgtBridgeMessageMessage, cancellationToken);
                 default:
                     // Catch all for unhandled intents
                     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try asking in a different way (intent was {luisResult.TopIntent().intent})";
