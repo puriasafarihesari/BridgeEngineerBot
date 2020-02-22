@@ -40,6 +40,28 @@ namespace CoreBot1.CognitiveModels
             }
         }
 
+        public string Project
+        {
+            get
+            {
+                //var toValue = Entities?._instance?.To?.FirstOrDefault()?.Text;
+                var countryValue = Entities?._instance.Project?.FirstOrDefault()?.Text;
+                //var toAirportValue = Entities?.To?.FirstOrDefault()?.Airport?.FirstOrDefault()?.FirstOrDefault();
+                return countryValue;
+            }
+        }
+
+        public string Skill
+        {
+            get
+            {
+                //var toValue = Entities?._instance?.To?.FirstOrDefault()?.Text;
+                var countryValue = Entities?._instance.Skill?.FirstOrDefault()?.Text;
+                //var toAirportValue = Entities?.To?.FirstOrDefault()?.Airport?.FirstOrDefault()?.FirstOrDefault();
+                return countryValue;
+            }
+        }
+
         // This value will be a TIMEX. And we are only interested in a Date so grab the first result and drop the Time part.
         // TIMEX is a format that represents DateTime expressions that include some ambiguity. e.g. missing a Year.
         public string TravelDate
