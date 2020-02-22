@@ -20,7 +20,8 @@ namespace CoreBot1.CognitiveModels
             BookFlight,
             Cancel,
             GetWeather,
-            None
+            None,
+            GetBridgeTypology
         };
         public Dictionary<Intent, IntentScore> Intents;
 

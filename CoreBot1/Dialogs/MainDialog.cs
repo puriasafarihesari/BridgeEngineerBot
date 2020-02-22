@@ -92,6 +92,11 @@ namespace CoreBot1.Dialogs
                     var getWeatherMessage = MessageFactory.Text(getWeatherMessageText, getWeatherMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(getWeatherMessage, cancellationToken);
                     break;
+                case FlightBooking.Intent.GetBridgeTypology:
+                    var getBridgeMessageText = "Sick dude, what kind of bridge?";
+                    var GgtBridgeMessageMessage = MessageFactory.Text(getBridgeMessageText, getBridgeMessageText, InputHints.IgnoringInput);
+                    await stepContext.Context.SendActivityAsync(GgtBridgeMessageMessage, cancellationToken);
+                    break;
 
                 default:
                     // Catch all for unhandled intents
