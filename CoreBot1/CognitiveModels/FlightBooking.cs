@@ -66,6 +66,7 @@ namespace CoreBot1.CognitiveModels
                 public InstanceData[] Airport;
                 public InstanceData[] From;
                 public InstanceData[] To;
+                public InstanceData[] Country;
             }
             [JsonProperty("$instance")]
             public _Instance _instance;

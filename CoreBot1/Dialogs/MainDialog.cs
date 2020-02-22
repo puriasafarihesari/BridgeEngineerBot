@@ -87,12 +87,18 @@ namespace CoreBot1.Dialogs
                     return await stepContext.BeginDialogAsync(nameof(BookingDialog), bookingDetails, cancellationToken);
 
                 case FlightBooking.Intent.GetWeather:
+
+
                     // We haven't implemented the GetWeatherDialog so we just display a TODO message.
                     var getWeatherMessageText = "TODO: get weather flow here";
                     var getWeatherMessage = MessageFactory.Text(getWeatherMessageText, getWeatherMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(getWeatherMessage, cancellationToken);
                     break;
                 case FlightBooking.Intent.GetBridgeTypology:
+                    BridgeTopologyDetails topologyDetails = new BridgeTopologyDetails()
+                    {
+                        Country = luisResult.Country
+                    };
                     var getBridgeMessageText = "Sick dude, what kind of bridge?";
                     var GgtBridgeMessageMessage = MessageFactory.Text(getBridgeMessageText, getBridgeMessageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(GgtBridgeMessageMessage, cancellationToken);
