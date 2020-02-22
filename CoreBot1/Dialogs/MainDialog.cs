@@ -99,11 +99,10 @@ namespace CoreBot1.Dialogs
                     {
                         Country = luisResult.Country
                     };
-                    var getBridgeMessageText = "Sick dude, what kind of bridge?";
-                    var GgtBridgeMessageMessage = MessageFactory.Text(getBridgeMessageText, getBridgeMessageText, InputHints.IgnoringInput);
-                    await stepContext.Context.SendActivityAsync(GgtBridgeMessageMessage, cancellationToken);
-                    break;
-
+                    return await stepContext.BeginDialogAsync(nameof(BridgeTypologyDialog), topologyDetails, cancellationToken);
+                    //var getBridgeMessageText = "Sick dude, what kind of bridge?";
+                    //var GgtBridgeMessageMessage = MessageFactory.Text(getBridgeMessageText, getBridgeMessageText, InputHints.IgnoringInput);
+                    //await stepContext.Context.SendActivityAsync(GgtBridgeMessageMessage, cancellationToken);
                 default:
                     // Catch all for unhandled intents
                     var didntUnderstandMessageText = $"Sorry, I didn't get that. Please try asking in a different way (intent was {luisResult.TopIntent().intent})";
