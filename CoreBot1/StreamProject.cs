@@ -10,12 +10,26 @@ namespace CoreBot1
     {
         public static void Stream(string project)
         {
-            string route = "https://speckle.continuum.codes/api/streams/a3KF2UUr_";
+            string route = "https://speckle.continuum.codes/api/streams/MfNWI67wx";
 
-            var test = new SpecklePlane(SpeckleObject.CreatePoint(0, 0, 0),
-                     SpeckleObject.CreateVector(0, 0, 1),
-                     SpeckleObject.CreateVector(1, 0, 0),
-                     SpeckleObject.CreateVector(0, 1, 0));
+            var test = new SpecleMesh();
+            test.Vertices = new List<double>()
+            {
+                0,0,10,
+                10,0,0,
+                10,10,0,
+                0,10,0
+            };
+
+            test.Faces = new List<int>()
+            {
+                1,0,1,2,3
+            };
+
+            //var test = new SpecklePlane(SpeckleObject.CreatePoint(0, 0, 0),
+            //         SpeckleObject.CreateVector(0, 0, 1),
+            //         SpeckleObject.CreateVector(1, 0, 0),
+            //         SpeckleObject.CreateVector(0, 1, 0));
 
             SpeckleInput input = new SpeckleInput();
             input.Objects.Add(test);
@@ -23,9 +37,8 @@ namespace CoreBot1
             string response = ApiRequest.ApiRequestWithAuth(RequestType.PUT, ResponseType.String, route, input);
             //dynamic response = ApiRequest.ApiRequest("POST", "json", ssoServer + "/api/users/authenticate/token", values);
         }
-
     }
-
+    
     public class SpeckleInput
     {
         [JsonProperty("objects")]
@@ -34,8 +47,24 @@ namespace CoreBot1
         public SpeckleInput()
         {
             this.Objects = new List<SpeckleObject>();
-
         }
+    }
+
+    public class SpecleMesh : SpeckleObject
+    {
+        public SpecleMesh()
+        {
+            this.Type = "Mesh";
+            this.Vertices = new List<double>();
+            this.Faces = new List<int>();
+        }
+
+        [JsonProperty("vertices")]
+        public List<double> Vertices { get; set; }
+
+        [JsonProperty("faces")]
+        public List<int> Faces { get; set; }
+
     }
 
     public class SpecklePlane : SpeckleObject
