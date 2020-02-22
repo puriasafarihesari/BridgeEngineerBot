@@ -14,7 +14,7 @@ namespace CoreBot1.Dialogs
 {
     public class BridgeTypologyDialog : CancelAndHelpDialog
     {
-        private const string CountryStepMsgText = "Where is your bridge located?";
+        private const string DestinationStepMsgText = "Where do you want to design a bridge?";
         //private const string OriginStepMsgText = "Where are you traveling from?";
 
         public BridgeTypologyDialog()
@@ -25,10 +25,10 @@ namespace CoreBot1.Dialogs
             AddDialog(new DateResolverDialog());
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
-                CountryStepAsync,
+                DestinationStepAsync,
                 //OriginStepAsync,
                 //TravelDateStepAsync,
-                //ConfirmStepAsync,
+                ConfirmStepAsync,
                 FinalStepAsync,
             }));
 
@@ -36,30 +36,80 @@ namespace CoreBot1.Dialogs
             InitialDialogId = nameof(WaterfallDialog);
         }
 
-
-        private async Task<DialogTurnResult> CountryStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> DestinationStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            var bridgeTypologyDetails = (BridgeTopologyDetails)stepContext.Options;
 
-            if(bridgeTypologyDetails.Country == null)
+            var bookingDetails = (BridgeTopologyDetails)stepContext.Options;
+
+            if (bookingDetails.Country == null)
             {
-                var promptMessage = MessageFactory.Text(CountryStepMsgText, CountryStepMsgText, InputHints.ExpectingInput);
+                var promptMessage = MessageFactory.Text(DestinationStepMsgText, DestinationStepMsgText, InputHints.ExpectingInput);
                 return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
+                //var promptMessage = MessageFactory.Text(DestinationStepMsgText, DestinationStepMsgText, InputHints.ExpectingInput);
+                //return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
             }
 
-            return await stepContext.NextAsync(bridgeTypologyDetails.Country, cancellationToken);
+            return await stepContext.NextAsync(bookingDetails.Country, cancellationToken);
         }
-        
+
+        //private async Task<DialogTurnResult> OriginStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        //{
+        //    var bookingDetails = (BookingDetails)stepContext.Options;
+
+        //    bookingDetails.Destination = (string)stepContext.Result;
+
+        //    if (bookingDetails.Origin == null)
+        //    {
+        //        var promptMessage = MessageFactory.Text(OriginStepMsgText, OriginStepMsgText, InputHints.ExpectingInput);
+        //        //return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
+        //    }
+
+        //    return await stepContext.NextAsync(bookingDetails.Origin, cancellationToken);
+        //}
+
+        //private async Task<DialogTurnResult> TravelDateStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        //{
+        //    var bookingDetails = (BookingDetails)stepContext.Options;
+
+        //    bookingDetails.Origin = (string)stepContext.Result;
+
+        //    if (bookingDetails.TravelDate == null || IsAmbiguous(bookingDetails.TravelDate))
+        //    {
+        //        return await stepContext.BeginDialogAsync(nameof(DateResolverDialog), bookingDetails.TravelDate, cancellationToken);
+        //    }
+
+        //    return await stepContext.NextAsync(bookingDetails.TravelDate, cancellationToken);
+        //}
+
+        private async Task<DialogTurnResult> ConfirmStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var bookingDetails = (BridgeTopologyDetails)stepContext.Options;
+            bookingDetails.Country = (string)stepContext.Result;
+
+            //bookingDetails.TravelDate = (string)stepContext.Result;
+
+            var messageText = $"Please confirm dude, you're designing a bridge in: {bookingDetails.Country}";
+            var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
+
+            return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
+        }
+
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             if ((bool)stepContext.Result)
             {
                 var bookingDetails = (BridgeTopologyDetails)stepContext.Options;
-
+                
                 return await stepContext.EndDialogAsync(bookingDetails, cancellationToken);
             }
 
             return await stepContext.EndDialogAsync(null, cancellationToken);
         }
+
+        //private static bool IsAmbiguous(string timex)
+        //{
+        //    var timexProperty = new TimexProperty(timex);
+        //    return !timexProperty.Types.Contains(Constants.TimexTypes.Definite);
+        //}
     }
 }
