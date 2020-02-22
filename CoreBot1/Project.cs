@@ -7,6 +7,11 @@ namespace CoreBot1
 {
     public class Project
     {
+        public string Name { get; set; }
+
+        public List<Person> People { get; set; }
+
+        public string Location { get; set; }
 
     }
 }
